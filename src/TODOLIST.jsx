@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import { Button, Input } from "@heroui/react";
+import Modal from './Features/Modal';
 
 function TODOLIST() {
   const [input, setInput] = useState("");
   const [list, setList] = useState([]);
   const [edit, setEdit] = useState(false);
   const [index, setIndex] = useState(null);
+  const [modal, setModal] = useState(null);
+  const [indexkey, setIndexkey] = useState(null);
 
   const toDo = () => {
-    if (input.trim() === "") return alert("List can't be empty!");
-    setList([...list, input]);
+    if (input.trim() === "") return setModal("Empty");
+    setList([...list, { text: input, completed: false }]);
     setInput("");
   };
 
@@ -21,18 +24,25 @@ function TODOLIST() {
 
   const editList = (key) => {
     setEdit(true);
-    setInput(list[key]);
+    setInput(list[key].text);
     setIndex(key);
   };
 
   const saveList = () => {
-    if (input.trim() === "") return alert("Can't be empty!");
+    if(input.trim() === "") return;
     const updated = [...list];
-    updated[index] = input;
+    updated[index].text = input;
     setList(updated);
     setEdit(false);
     setInput("");
   };
+
+  const toggleTask = (key) => {
+    const updated = [...list];
+    updated[key].completed = !updated[key].completed;
+    setList(updated);
+  };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6
@@ -63,7 +73,17 @@ function TODOLIST() {
 
           {/* Input Section */}
           <div className="flex flex-col sm:flex-row gap-3 mb-6 w-full items-center">
-            <Input
+            <input 
+            onKeyDown={(e) => {
+              if(e.key === "Enter") {
+               if(edit) {
+                input.trim() === "" ? setModal("Empty") : setModal("Save");
+               }
+               else {
+                toDo();
+               }
+              }
+            }}
               placeholder="Add your task here..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -74,7 +94,14 @@ function TODOLIST() {
 
             {edit ? (
               <Button
-                onClick={saveList}
+                onClick={() => {
+                  if(input.trim() === "") {
+                    setModal("Empty");
+                  }
+                  else {
+                    setModal("Save");
+                  }
+                }}
                 className="bg-[linear-gradient(90deg,#00ffff,#5e00ff,#ff00ff)] 
              text-white font-bold px-8 py-2 md:px-10 md:py-3 rounded-xl cursor-pointer
              shadow-[0_4px_15px_rgba(0,255,255,0.4)] hover:shadow-[0_6px_20px_rgba(0,255,255,0.6)] 
@@ -113,18 +140,26 @@ function TODOLIST() {
               >
                 <div className="flex gap-3 items-center">
                   <span className="text-cyan-400 font-semibold text-xl md:text-2xl">
-                    {key + 1}.
+                    <input type="checkbox"
+                      className="w-5 h-5 accent-cyan-400 cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95"
+                      checked={li.completed}
+                      onChange={() => toggleTask(key)}
+                    />
                   </span>
-                  <span className="text-white text-base md:text-2xl wrap-break-words">
-                    {li}
+                  <span className={`text-white text-base md:text-2xl ${li.completed ? "line-through opacity-50" : ""
+                    }`}>
+                    {li.text}
                   </span>
                 </div>
 
-                {/* Action Icons — Always Visible */}
+                {/*Features*/}
                 <div className="flex gap-3 items-center">
                   <MdDelete
                     size={40}
-                    onClick={() => deleteList(key)}
+                    onClick={() => {
+                      setModal("Delete");
+                      setIndexkey(key);
+                    }}
                     className="cursor-pointer text-red-400 hover:text-red-300 hover:bg-red-500/20 
                            rounded-full p-1 transition-all duration-300 active:scale-95 shadow-sm"
                   />
@@ -140,6 +175,24 @@ function TODOLIST() {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      
+      {
+        modal && <Modal
+        type={modal}
+        onConfirm={() => {
+          if(modal === "Delete") deleteList(indexkey);
+          if(modal === "Save") saveList(indexkey);
+          if(modal === "Empty") setModal(null);
+
+          setModal(null);
+        }}
+
+        onCancel={() => setModal(null)}
+        />
+      }
+
     </div>
   );
 }
