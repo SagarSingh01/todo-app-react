@@ -29,7 +29,7 @@ function TODOLIST() {
   };
 
   const saveList = () => {
-    if(input.trim() === "") return;
+    if (input.trim() === "") return;
     const updated = [...list];
     updated[index].text = input;
     setList(updated);
@@ -73,17 +73,17 @@ function TODOLIST() {
 
           {/* Input Section */}
           <div className="flex flex-col sm:flex-row gap-3 mb-6 w-full items-center">
-            <input 
-            onKeyDown={(e) => {
-              if(e.key === "Enter") {
-               if(edit) {
-                input.trim() === "" ? setModal("Empty") : setModal("Save");
-               }
-               else {
-                toDo();
-               }
-              }
-            }}
+            <input
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  if (edit) {
+                    input.trim() === "" ? setModal("Empty") : setModal("Save");
+                  }
+                  else {
+                    toDo();
+                  }
+                }
+              }}
               placeholder="Add your task here..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -95,7 +95,7 @@ function TODOLIST() {
             {edit ? (
               <Button
                 onClick={() => {
-                  if(input.trim() === "") {
+                  if (input.trim() === "") {
                     setModal("Empty");
                   }
                   else {
@@ -177,22 +177,26 @@ function TODOLIST() {
       </div>
 
       {/* Modal */}
-      
+
       {
         modal && <Modal
-        type={modal}
-        onConfirm={() => {
-          if(modal === "Delete") deleteList(indexkey);
-          if(modal === "Save") saveList(indexkey);
-          if(modal === "Empty") setModal(null);
+          type={modal}
+          onConfirm={() => {
+            if (modal === "Delete") deleteList(indexkey);
+            if (modal === "Save") saveList(indexkey);
+            if (modal === "Empty") setModal(null);
 
-          setModal(null);
-        }}
+            setModal(null);
+          }}
 
-        onCancel={() => {
-          setModal(null);
-          setEdit(false);
-        }}
+          onCancel={() => {
+            setModal(null);
+
+            if (modal === "Save") {
+              setEdit(false);
+              setInput("");
+            }
+          }}
         />
       }
 
