@@ -102,7 +102,7 @@ function TODOLIST() {
                     setModal("Save");
                   }
                 }}
-                className="bg-[linear-gradient(90deg,#00ffff,#5e00ff,#ff00ff)] 
+                className="bg-[linear-gradient(115deg,#00f5ff,#0a001f,#7b2cff,#ff00ff)] 
              text-white font-bold px-8 py-2 md:px-10 md:py-3 rounded-xl cursor-pointer
              shadow-[0_4px_15px_rgba(0,255,255,0.4)] hover:shadow-[0_6px_20px_rgba(0,255,255,0.6)] 
              hover:scale-105 active:scale-95 transition-all duration-300 text-2xl md:text-xl w-full sm:w-auto"
@@ -189,7 +189,10 @@ function TODOLIST() {
           setModal(null);
         }}
 
-        onCancel={() => setModal(null)}
+        onCancel={() => {
+          setModal(null);
+          setEdit(false);
+        }}
         />
       }
 
