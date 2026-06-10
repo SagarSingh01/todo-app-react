@@ -72,14 +72,14 @@ function Modal({ type, onConfirm, onCancel }) {
 
               <button
                 onClick={onCancel}
-                className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition"
+                className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer"
               >
                 Cancel
               </button>
 
               <button
                 onClick={onConfirm}
-                className={`px-4 py-2 rounded-lg text-white font-semibold transition ${current.color}`}
+                className={`px-4 py-2 rounded-lg text-white font-semibold transition ${current.color} cursor-pointer`}
               >
                 {current.button}
               </button>
