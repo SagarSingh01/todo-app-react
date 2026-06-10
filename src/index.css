@@ -1,7 +1,18 @@
 @import "tailwindcss";
 
-@media (max-width : 500px) {
-    body {
-        overflow-y: hidden;
-    }
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #06b6d4;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #22d3ee;
 }
