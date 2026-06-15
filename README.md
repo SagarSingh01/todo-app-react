@@ -4,7 +4,7 @@ A modern and responsive task management application built with React, designed t
 
 ## 🌐 Live Demo
 
-Add your deployed link here.
+https://todo-app-react-khaki-eight.vercel.app
 
 ## ✨ Features
 
