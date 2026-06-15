@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import { Button, Input } from "@heroui/react";
-import Modal from './Features/Modal';
+import Modal from './Modal/Modal';
 import { styles } from './Styles/styles';
 import { motion } from 'framer-motion';
 
@@ -84,7 +84,7 @@ function TODOLIST() {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <div className={`${styles.panel} relative`}>
+        <div className={`${styles.panel}`}>
 
           {/* Header */}
           <div className={styles.header}>
@@ -134,9 +134,9 @@ function TODOLIST() {
               className={styles.input}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  edit
-                    ? input.trim() === ""
-                      ? setModal("Empty")
+                  edit ?
+                    input.trim() === "" ?
+                      setModal("Empty")
                       : setModal("Save")
                     : toDo();
                 }
@@ -144,11 +144,13 @@ function TODOLIST() {
             />
 
             <Button
-              onClick={() =>
-                input.trim() === ""
-                  ? setModal("Empty")
-                  : setModal("Save")
-              }
+              onClick={() => {
+                edit ?
+                  input.trim() === "" ?
+                    setModal("Empty")
+                    : setModal("Save")
+                  : toDo();
+              }}
               className={edit ? styles.saveButton : styles.addButton}
             >
               {edit ? "Save Task" : "Add Task"}
@@ -205,7 +207,8 @@ function TODOLIST() {
           </div>
 
           {/* Empty State */}
-          {list.length === 0 ? (
+          {
+          list.length === 0 ? (
             <div className={styles.emptyState}>
               <div className={styles.emptyEmoji}>🚀</div>
 
@@ -289,9 +292,12 @@ function TODOLIST() {
                   </div>
                 ))}
             </div>
-          )}
+          )
+          }
         </div>
       </div>
+
+      {/* MODAL */}
 
       {modal && (
         <Modal
